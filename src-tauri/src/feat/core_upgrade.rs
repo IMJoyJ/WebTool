@@ -44,7 +44,7 @@ pub async fn upgrade_core(force: bool) -> Result<CoreUpgradeReport> {
     let _serialized = UPGRADE_LOCK.lock().await;
     let core = Config::verge().await.latest_arc().get_valid_clash_core();
     tracing::Span::current().record("core", tracing::field::display(&core));
-    let alpha = core.ends_with("-alpha");
+    let alpha = core.ends_with("-alpha") || core == "kernel2";
     let target = managed_core_path(&core)?;
 
     // A core already broken by the in-place updater cannot report a version; upgrading is the repair.

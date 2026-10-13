@@ -12,7 +12,7 @@ if (args.length > 1 || (args.length === 1 && args[0] !== '--check')) {
 }
 const check = args[0] === '--check'
 const temporary = check
-  ? fs.mkdtempSync(path.join(os.tmpdir(), 'verge-contract-'))
+  ? fs.mkdtempSync(path.join(os.tmpdir(), 'webtool-contract-'))
   : null
 const output = temporary ? path.join(temporary, 'bindings.ts') : BINDINGS
 try {
@@ -21,7 +21,7 @@ try {
     [
       'run',
       '-p',
-      'clash-verge',
+      'webtool',
       '--bin',
       'frontend-contract',
       '--locked',

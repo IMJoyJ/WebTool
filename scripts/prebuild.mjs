@@ -16,7 +16,7 @@ import { log_debug, log_error, log_info, log_success } from './utils.mjs'
 /** Prepares platform resources, caching versions and unchanged files unless `--force` is used. */
 
 const cwd = process.cwd()
-const TEMP_DIR = path.join(cwd, 'node_modules/.verge')
+const TEMP_DIR = path.join(cwd, 'node_modules/.webtool')
 const FORCE = process.argv.includes('--force') || process.argv.includes('-f')
 const VERSION_CACHE_FILE = path.join(TEMP_DIR, '.version_cache.json')
 const HASH_CACHE_FILE = path.join(TEMP_DIR, '.hash_cache.json')
@@ -277,8 +277,8 @@ function clashMetaAlpha() {
   const isWin = platform === 'win32'
   const urlExt = isWin ? 'zip' : 'gz'
   return {
-    name: 'verge-mihomo-alpha',
-    targetFile: `verge-mihomo-alpha-${SIDECAR_HOST}${isWin ? '.exe' : ''}`,
+    name: 'kernel2',
+    targetFile: `kernel2-${SIDECAR_HOST}${isWin ? '.exe' : ''}`,
     exeFile: `${name}${isWin ? '.exe' : ''}`,
     zipFile: `${name}-${META_ALPHA_VERSION}.${urlExt}`,
     downloadURL: `${META_ALPHA_URL_PREFIX}/${name}-${META_ALPHA_VERSION}.${urlExt}`,
@@ -290,8 +290,8 @@ function clashMeta() {
   const isWin = platform === 'win32'
   const urlExt = isWin ? 'zip' : 'gz'
   return {
-    name: 'verge-mihomo',
-    targetFile: `verge-mihomo-${SIDECAR_HOST}${isWin ? '.exe' : ''}`,
+    name: 'kernel1',
+    targetFile: `kernel1-${SIDECAR_HOST}${isWin ? '.exe' : ''}`,
     exeFile: `${name}${isWin ? '.exe' : ''}`,
     zipFile: `${name}-${META_VERSION}.${urlExt}`,
     downloadURL: `${META_URL_PREFIX}/${META_VERSION}/${name}-${META_VERSION}.${urlExt}`,
@@ -679,8 +679,10 @@ const CORE_HASHES_NSH = path.join(
 async function resolveCoreHashes() {
   const lines = []
   for (const [define, name] of [
-    ['MIHOMO_SHA256', 'verge-mihomo'],
-    ['MIHOMO_ALPHA_SHA256', 'verge-mihomo-alpha'],
+    ['KERNEL1_SHA256', 'kernel1'],
+    ['KERNEL2_SHA256', 'kernel2'],
+    ['MIHOMO_SHA256', 'kernel1'],
+    ['MIHOMO_ALPHA_SHA256', 'kernel2'],
   ]) {
     const sidecar = path.join(SIDECAR_DIR, `${name}-${SIDECAR_HOST}.exe`)
     const digest = createHash('sha256')
@@ -731,13 +733,13 @@ const resolveUnSetDnsScript = () =>
 
 const tasks = [
   {
-    name: 'verge-mihomo-alpha',
+    name: 'kernel2',
     func: () =>
       getLatestAlphaVersion().then(() => resolveSidecar(clashMetaAlpha())),
     retry: 5,
   },
   {
-    name: 'verge-mihomo',
+    name: 'kernel1',
     func: () =>
       getLatestReleaseVersion().then(() => resolveSidecar(clashMeta())),
     retry: 5,

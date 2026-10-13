@@ -44,7 +44,7 @@ export function TunViewer({ ref }: { ref?: Ref<DialogRef> }) {
   const [open, setOpen] = useState(false)
   const [values, setValues] = useState({
     stack: 'mips',
-    device: OS === 'macos' ? 'utun1024' : 'Mihomo',
+    device: OS === 'macos' ? 'utun1024' : 'WebTool',
     autoRoute: true,
     routeExcludeAddress: '',
     autoRedirect: false,
@@ -74,7 +74,7 @@ export function TunViewer({ ref }: { ref?: Ref<DialogRef> }) {
         OS === 'linux' ? (nextAutoRoute ? rawAutoRedirect : false) : false
       setValues({
         stack: clash?.tun.stack ?? 'mips',
-        device: clash?.tun.device ?? (OS === 'macos' ? 'utun1024' : 'Mihomo'),
+        device: clash?.tun.device ?? (OS === 'macos' ? 'utun1024' : 'WebTool'),
         autoRoute: nextAutoRoute,
         routeExcludeAddress: (clash?.tun['route-exclude-address'] ?? []).join(
           ',',
@@ -153,7 +153,7 @@ export function TunViewer({ ref }: { ref?: Ref<DialogRef> }) {
             onClick={async () => {
               const tun: IConfigData['tun'] = {
                 stack: 'mips',
-                device: OS === 'macos' ? 'utun1024' : 'Mihomo',
+                device: OS === 'macos' ? 'utun1024' : 'WebTool',
                 'auto-route': true,
                 ...(OS === 'linux'
                   ? {
@@ -168,7 +168,7 @@ export function TunViewer({ ref }: { ref?: Ref<DialogRef> }) {
               }
               setValues({
                 stack: 'mips',
-                device: OS === 'macos' ? 'utun1024' : 'Mihomo',
+                device: OS === 'macos' ? 'utun1024' : 'WebTool',
                 autoRoute: true,
                 routeExcludeAddress: '',
                 autoRedirect: false,
@@ -222,7 +222,7 @@ export function TunViewer({ ref }: { ref?: Ref<DialogRef> }) {
             spellCheck="false"
             sx={{ width: 250 }}
             value={values.device}
-            placeholder="Mihomo"
+            placeholder="WebTool"
             onChange={(e) =>
               setValues((v) => ({ ...v, device: e.target.value }))
             }

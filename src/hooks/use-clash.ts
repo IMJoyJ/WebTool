@@ -112,9 +112,8 @@ export const useClash = () => {
     })
   })
 
-  const version = versionData?.meta
-    ? `${versionData.version} Mihomo`
-    : versionData?.version || '-'
+  const rawVersion = versionData?.version || '-'
+  const version = rawVersion.replace(/mihomo|clash|meta/gi, '').trim() || rawVersion
 
   return {
     clash,

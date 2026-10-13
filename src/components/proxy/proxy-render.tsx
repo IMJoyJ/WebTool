@@ -20,6 +20,7 @@ import { useIconCache } from '@/hooks/use-icon-cache'
 import { useVerge } from '@/hooks/use-verge'
 import { useThemeMode } from '@/services/states'
 import type { ResolvedProxyMember } from '@/types/proxy-view'
+import { formatProtocolType } from '@/utils/protocol-mapper'
 
 import { ProxyGroupHeaderBlock } from './proxy-group-header-block'
 import { ProxyGroupTools } from './proxy-group-tools'
@@ -139,7 +140,7 @@ export const ProxyRender = memo(function ProxyRender(props: RenderProps) {
                   textOverflow: 'ellipsis',
                 }}
               >
-                <StyledTypeBox>{group.type}</StyledTypeBox>
+                <StyledTypeBox>{formatProtocolType(group.type)}</StyledTypeBox>
                 <StyledSubtitle sx={{ color: 'text.secondary' }}>
                   {group.now}
                 </StyledSubtitle>
