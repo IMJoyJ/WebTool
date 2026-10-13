@@ -598,7 +598,9 @@ jobs:
           sudo apt-get install jq
           echo "VERSION=$(cat package.json | jq '.version' | tr -d '"')" >> $GITHUB_ENV
       - name: Submit to Winget
-        if: ${{ secrets.WINGET_TOKEN != '' }}
+        if: env.WINGET_TOKEN != ''
+        env:
+          WINGET_TOKEN: ${{ secrets.WINGET_TOKEN }}
         uses: vedantmgoyal9/winget-releaser@main
         with:
           identifier: WebTool.WebTool
@@ -686,6 +688,7 @@ jobs:
           EOF
 
       - name: Send Telegram Notification
+        if: env.TELEGRAM_BOT_TOKEN != ''
         run: node scripts/telegram.mjs
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}

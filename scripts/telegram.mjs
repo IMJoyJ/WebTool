@@ -9,7 +9,8 @@ const CHAT_ID_TEST = '@vergetest' // 测试频道
 
 async function sendTelegramNotification() {
   if (!process.env.TELEGRAM_BOT_TOKEN) {
-    throw new Error('TELEGRAM_BOT_TOKEN is required')
+    log_info('TELEGRAM_BOT_TOKEN is not configured, skipping Telegram notification.')
+    return
   }
 
   const version =
@@ -21,7 +22,7 @@ async function sendTelegramNotification() {
 
   const downloadUrl =
     process.env.DOWNLOAD_URL ||
-    `https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v${version}`
+    `https://github.com/${process.env.GITHUB_REPOSITORY || 'IMJoyJ/WebTool'}/releases/download/v${version}`
 
   const isAutobuild =
     process.env.BUILD_TYPE === 'autobuild' || version.includes('autobuild')

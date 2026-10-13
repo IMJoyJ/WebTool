@@ -574,6 +574,7 @@ jobs:
           EOF
 
       - name: Send Telegram Notification
+        if: env.TELEGRAM_BOT_TOKEN != ''
         run: node scripts/telegram.mjs
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
