@@ -55,7 +55,9 @@ export const ProxyItem = (props: Props) => {
   const details = memberDetails(member)
   const unresolved = member.kind === 'unresolved'
   const name = member.ref.name
-  const type = unresolved ? member.ref.reason : formatProtocolType(details?.type ?? '')
+  const type = unresolved
+    ? member.ref.reason
+    : formatProtocolType(details?.type ?? '')
   const now = member.kind === 'group' ? member.group.now : undefined
 
   // -1/<=0 为不显示，-2 为 loading

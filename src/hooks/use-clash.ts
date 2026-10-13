@@ -113,7 +113,8 @@ export const useClash = () => {
   })
 
   const rawVersion = versionData?.version || '-'
-  const version = rawVersion.replace(/mihomo|clash|meta/gi, '').trim() || rawVersion
+  const version =
+    rawVersion.replace(/mihomo|clash|meta/gi, '').trim() || rawVersion
 
   return {
     clash,

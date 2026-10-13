@@ -26,7 +26,9 @@ export const ProxyItemMini = (props: Props) => {
   const details = memberDetails(member)
   const unresolved = member.kind === 'unresolved'
   const name = member.ref.name
-  const type = unresolved ? member.ref.reason : formatProtocolType(details?.type ?? '')
+  const type = unresolved
+    ? member.ref.reason
+    : formatProtocolType(details?.type ?? '')
   const now = member.kind === 'group' ? member.group.now : undefined
 
   const { t } = useTranslation()
