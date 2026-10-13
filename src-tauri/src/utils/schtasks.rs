@@ -8,11 +8,12 @@ use std::process::{Command, Output};
 use windows::Win32::Globalization::{GetACP, GetOEMCP, MULTI_BYTE_TO_WIDE_CHAR_FLAGS, MultiByteToWideChar};
 
 const CREATE_NO_WINDOW: u32 = 0x08000000;
-const TASK_NAME_USER: &str = "Clash Verge";
-const TASK_NAME_ADMIN: &str = "Clash Verge (Admin)";
+const TASK_NAME_USER: &str = "WebTool";
+const TASK_NAME_ADMIN: &str = "WebTool (Admin)";
 const TASK_XML_DIR: &str = "tasks";
-const TASK_XML_USER: &str = "clash-verge-task-user.xml";
-const TASK_XML_ADMIN: &str = "clash-verge-task-admin.xml";
+const TASK_XML_USER: &str = "webtool-task-user.xml";
+const TASK_XML_ADMIN: &str = "webtool-task-admin.xml";
+const LEGACY_TASK_NAMES: &[&str] = &["Clash Verge", "Clash Verge (Admin)"];
 
 #[derive(Clone, Copy)]
 pub enum TaskMode {
@@ -109,6 +110,15 @@ async fn cleanup_legacy_shortcuts() -> Result<()> {
         .await
         .with_context(|| format!("failed to remove startup shortcut {}", new_shortcut.display()))?;
     Ok(())
+}
+
+pub fn cleanup_legacy_tasks() {
+    for name in LEGACY_TASK_NAMES {
+        let _ = Command::new("schtasks")
+            .creation_flags(CREATE_NO_WINDOW)
+            .args(["/Delete", "/TN", name, "/F"])
+            .output();
+    }
 }
 
 fn task_xml_path(mode: TaskMode) -> Result<PathBuf> {
@@ -331,6 +341,8 @@ pub fn remove_task(mode: TaskMode) -> Result<()> {
 pub async fn set_auto_launch(is_enable: bool, is_admin: bool) -> Result<()> {
     let target = if is_admin { TaskMode::Admin } else { TaskMode::User };
     let other = if is_admin { TaskMode::User } else { TaskMode::Admin };
+
+    cleanup_legacy_tasks();
 
     if let Err(err) = cleanup_legacy_shortcuts().await {
         logging!(warn, Type::Setup, "Failed to cleanup legacy startup shortcuts: {err:#}");
